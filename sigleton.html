@@ -1,0 +1,63 @@
+<html>
+<head>
+	<title>js设计模式</title>
+	<style>
+	.mask {
+		width: 100%;
+		height: 100%;
+		opacity: .8;
+		z-index: 10001;
+		top:0;
+		left: 0;
+		position: absolute;
+		background-color: #999;
+
+		color: #fff;
+		text-align: center;
+		font-size: 10em;
+		display: none;
+	}
+	</style>
+</head>
+<body>
+	<p>singleton:</p>
+	<input type="button" value="SINGLETON MASK">
+</body>
+<script>
+
+	//singleton
+	var singleton = function(fn){
+		var target;
+		return function(){
+			target || (target = fn.apply(this,arguments));
+		}
+	},
+	Mask = {
+		create: singleton(function(){
+			var mask = document.createElement('div');
+			mask.className = 'mask';
+			mask.innerText = 'JUST A SINGLETON MASK!';
+			this.mask = document.body.appendChild(mask);
+			return this.mask;
+		}),
+		show: function(){
+			this.create();
+			this.mask.style.display='block';
+		},
+		hide:function(){
+			this.create();
+			this.mask.style.display='none';
+		}
+	}
+
+	window.onload = function(){
+		var btn1 = document.getElementsByTagName('input')[0];
+		btn1.onclick = function(){
+			Mask.show();
+			setTimeout(function(){
+				Mask.hide();
+			},5000);
+		}
+	}
+</script>
+</html>
